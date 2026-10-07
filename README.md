@@ -23,6 +23,8 @@ This codec has been tested on Windows 10 and macOS Catalina.
 
 It has been tested in Adobe CC 2019 and Adobe CC 2020.
 
+The After Effects output module has also been tested in After Effects 2026 on Windows 11 and on macOS 26 (Apple Silicon, native universal build).
+
 ## Installation
 
 Run the provided installer.
