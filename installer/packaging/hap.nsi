@@ -50,8 +50,16 @@ FunctionEnd
 Section "Install"
   ; the install dir is fixed: the Adobe apps only scan the MediaCore folder
   SetOutPath "${MEDIACORE}\HAP"
+  ; a running Adobe app holds the plugins open; if a copy was skipped (Ignore, or a silent
+  ; install), stop before touching registration so the old version stays consistently installed
+  ClearErrors
   File "/oname=HAPPlugin.aex" "${AEX}"
   File "/oname=HAPPlugin.prm" "${PRM}"
+  IfErrors 0 plugins_copied
+    MessageBox MB_ICONSTOP "The HAP plugins could not be installed because they are in use. Close After Effects, Premiere Pro and Media Encoder, then run the installer again." /SD IDOK
+    SetErrorLevel 2
+    Abort
+  plugins_copied:
   ; the exporter copies these into each Media Encoder version's preset folder on load
   SetOutPath "${MEDIACORE}\HAP\Presets"
   File "..\..\asset\encoder_preset\ame-12.0\*.epr"
