@@ -1,5 +1,5 @@
 ; Windows installer for the HAP plugins: After Effects output module + Premiere Pro / Media Encoder exporter.
-; Build:  makensis /DVERSION=x.y.z /DAEX=<HAPPlugin.aex> /DPRM=<HAPPlugin.prm> installer\release\hap.nsi
+; Build:  makensis /DVERSION=x.y.z /DAEX=<HAPPlugin.aex> /DPRM=<HAPPlugin.prm> installer\packaging\hap.nsi
 
 !ifndef VERSION
   !error "pass /DVERSION=x.y.z"
