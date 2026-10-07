@@ -19,6 +19,19 @@ DEST="Library/Application Support/Adobe/Common/Plug-ins/7.0/MediaCore/HAP"
 ID=org.hapcommunity.HapCodecPlugin.adobe
 OUT="$PWD/${OUT_NAME:-HAP-Adobe-$VERSION-macOS}.pkg"
 
+# notarising only makes sense for a fully signed build - refuse before doing any work
+if [ -n "${NOTARY_PROFILE:-}" ]; then
+  MISSING=""
+  [ -n "${APP_IDENTITY:-}" ] || MISSING="$MISSING
+  APP_IDENTITY (Developer ID Application - signs the plug-ins)"
+  [ -n "${INSTALLER_IDENTITY:-}" ] || MISSING="$MISSING
+  INSTALLER_IDENTITY (Developer ID Installer - signs the .pkg)"
+  if [ -n "$MISSING" ]; then
+    echo "error: NOTARY_PROFILE is set, but not:$MISSING" >&2
+    exit 1
+  fi
+fi
+
 WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 mkdir -p "$WORK/root/$DEST"

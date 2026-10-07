@@ -76,8 +76,16 @@ Function un.onInit
 FunctionEnd
 
 Section "Uninstall"
+  ; a running Adobe app holds the plugins open; if either can't be removed, stop here so the
+  ; uninstaller and its Add/Remove Programs entry survive for another try
+  ClearErrors
   Delete "${MEDIACORE}\HAP\HAPPlugin.aex"
   Delete "${MEDIACORE}\HAP\HAPPlugin.prm"
+  IfErrors 0 plugins_removed
+    MessageBox MB_ICONSTOP "The HAP plugins are in use. Close After Effects, Premiere Pro and Media Encoder, then run the uninstaller again." /SD IDOK
+    SetErrorLevel 2
+    Abort
+  plugins_removed:
   Delete "${MEDIACORE}\HAP\Presets\*.epr"
   RMDir "${MEDIACORE}\HAP\Presets"
   Delete "${MEDIACORE}\HAP\${UNINSTALLER}"
